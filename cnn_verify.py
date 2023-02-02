@@ -9,9 +9,9 @@ import os
 from UtilPacket import fPredictXRayLung
 
 
-DIR_DATASET_VAL_NORMAL='C:/UNIRIO/Projects/DataSet/xRay/resized/val/NORMAL/'
-DIR_DATASET_VAL_PNEUMONIA='C:/UNIRIO/Projects/DataSet/xRay/resized/val/PNEUMONIA/'
-FILE_MODEL='C:/UNIRIO\Projects\CNNDeepLearning\Models/cnn.h5'
+DIR_DATASET_VAL_NORMAL='C:/UNIRIO/Projects/DataSet/xRay/resized/test/NORMAL/'
+DIR_DATASET_VAL_PNEUMONIA='C:/UNIRIO/Projects/DataSet/xRay/resized/test/PNEUMONIA/'
+FILE_MODEL='C:/UNIRIO/Projects/CNNDeepLearning\Models/CNN.model.20230201.232145.h5'
 
 
 
@@ -22,15 +22,14 @@ for file_input in os.listdir(DIR_DATASET_VAL_NORMAL):
             
         if os.path.isfile(file_input_path):  
             
-            predict=fPredictXRayLung(FILE_MODEL,file_input_path,64,64)
-            print(predict)
+            predict=fPredictXRayLung(FILE_MODEL,file_input_path,96,96)
+                         
+            if predict=='Normal':
+                print("Normal")
+            else:
+                print("Pneumonia")
             
-#            if predict=='Normal':
-#                print("Normal")
-#            else:
-#                print("Pneumonia")
             
-            
-            print(file_input_path)
+
             
  

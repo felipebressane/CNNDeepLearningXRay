@@ -20,20 +20,20 @@ class paramCNN:
                 self.ParamCNN = [{"Process":1,"CNN":3,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                              {"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                              {"Neuronios":256,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":1,"Epoca":10,"Initial_Rate":0,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},
+                                 {"Process":2,"CNN":1,"Epoca":10,"Initial_Rate":0,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},
                                                                                              {"Neuronios":128,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":1,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
+                                 {"Process":3,"CNN":1,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                              {"Neuronios":256,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":1,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":False},
+                                 {"Process":4,"CNN":1,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":False},
                                                                                              {"Neuronios":256,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":2,"Epoca":5,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
+                                 {"Process":5,"CNN":2,"Epoca":5,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                             {"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                             {"Neuronios":256,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":2,"Epoca":10,"Initial_Rate":0,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},
+                                 {"Process":6,"CNN":2,"Epoca":10,"Initial_Rate":0,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},
                                                                                              {"Neuronios":128,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":2,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
+                                 {"Process":7,"CNN":2,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":True},
                                                                                              {"Neuronios":256,"Dropout":True,"BatchNormal":True}]},
-                                 {"Process":1,"CNN":2,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":False},
+                                 {"Process":8,"CNN":2,"Epoca":15,"Initial_Rate":0,"Camadas":[{"Neuronios":256,"Dropout":False,"BatchNormal":False},
                                                                                              {"Neuronios":256,"Dropout":True,"BatchNormal":True}]}]
                                                      
             elif TypeDeepLayer == 2:
@@ -103,7 +103,7 @@ class paramCNN:
                                                                                  
         else:
             
-            self.ParamCNN = [{"Process":0,"CNN":8,"Epoca":20,"Initial_Rate":0,"BatchSize":16,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},                                                                                                        
+            self.ParamCNN = [{"Process":0,"CNN":1,"Epoca":20,"Initial_Rate":0,"BatchSize":16,"Camadas":[{"Neuronios":128,"Dropout":False,"BatchNormal":False},                                                                                                        
                                                                                                         {"Neuronios":256,"Dropout":True,"BatchNormal":True}]}]
         
                                                                                  

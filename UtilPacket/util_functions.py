@@ -106,18 +106,17 @@ def fPredictXRayLung(model,xRayFile,SizeWidth,SizeHeight):
     testImage = np.expand_dims(testImage, axis = 0)
     
     result = cnnModel.predict(testImage)
-    
-     
+        
     if result[0][0] == 1:        
-        prediction = 'Normal'
-    else:        
         prediction = 'Pneumonia'
+    else:        
+        prediction = 'Normal'
 
     return prediction
 
 
 
-def fReportHistoric(fileReport,historyTrainning,process,cnn,numberEpoch,batchSize,numberLayers,stepsPerEpoch,validationSteps):
+def fReportHistoric(fileReport,historyTrainning,typeDeepLayer,process,cnn,numberEpoch,batchSize,numberLayers,stepsPerEpoch,validationSteps):
     iAccuracy = 0
     iEpoch = 0
 
@@ -129,7 +128,7 @@ def fReportHistoric(fileReport,historyTrainning,process,cnn,numberEpoch,batchSiz
         
         iEpoch += 1
         
-        fileReport.write("%s;%s;%s;%s;%s;%s;%s;%s;%0.5f;%0.5f;%0.5f;%0.5f\n" %(process,cnn,numberEpoch,batchSize,numberLayers,stepsPerEpoch,validationSteps,iEpoch,loss,accuracy,val_loss,val_accuracy))
+        fileReport.write("%s;%s;%s;%s;%s;%s;%s;%s;%s;%0.5f;%0.5f;%0.5f;%0.5f\n" %(typeDeepLayer,process,cnn,numberEpoch,batchSize,numberLayers,stepsPerEpoch,validationSteps,iEpoch,loss,accuracy,val_loss,val_accuracy))
     
     fileReport.flush()
     

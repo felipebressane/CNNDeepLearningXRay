@@ -15,34 +15,41 @@ from tensorflow import keras
 import os
 import time
 import datetime
-import tensorflow as tf
 from keras.layers import Dense, Dropout, BatchNormalization
+from keras.preprocessing.image import ImageDataGenerator
+
 
  
 # Main Dataset directory and sub-directories with image files
 DATASET_HOME = 'C:/UNIRIO/Projects/DataSet/xRay/resized/'
 TRAIN_DIR    = os.path.join(DATASET_HOME, 'train')
 TEST_DIR     = os.path.join(DATASET_HOME, 'test')
+ 
+# Output files (Resume and History)
+fileTime = datetime.datetime.now()
+FILE_RESUME  = 'C:/UNIRIO/Projects/CNNDeepLearning/Experiments/resume.model.CNN.' + fileTime.strftime("%Y%m%d.%H%M%S") + '.txt'
+resumeFileModel1CNN=open(FILE_RESUME,'w')
+resumeFileModel1CNN.write("Type Deep Layer;Process;CNN;Epoch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Loss;Accuracy;Val_Loss;Val_Accuracy;Best Epoch;Duration\n")
+
+FILE_HISTORY   = 'C:/UNIRIO/Projects/CNNDeepLearning/Experiments/history.model.CNN.' + fileTime.strftime("%Y%m%d.%H%M%S") + '.txt'
+historyFileModel1CNN=open(FILE_HISTORY,'w')
+historyFileModel1CNN.write("Type Deep Layer;Process;CNN;Number of Epocch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Epoch;Loss;Accuracy;Val_Loss;Val_Accuracy\n")
+
+FILE_H5        = 'C:/UNIRIO/Projects/CNNDeepLearning/Models/CNN.model.' + fileTime.strftime("%Y%m%d.%H%M%S") + '.h5'
 
 # Calculate number files in directories of train and test
 nFilesTrain=fNumberFiles(TRAIN_DIR)
 nFilesTest=fNumberFiles(TEST_DIR)
 
-# Output files
-FILE_RESUME_OUTPUT   = 'C:/UNIRIO/Projects/CNNDeepLearning/Output/resume.model.CNN.txt'
-resumeFileModel1CNN=open(FILE_RESUME_OUTPUT,'w')
-resumeFileModel1CNN.write("Process;CNN;Epoch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Loss;Accuracy;Val_Loss;Val_Accuracy;Best Epoch;Duration\n")
+# Dimensions of image files
+inputImageWidth  = 96
+inputImageHeight = 96
 
-FILE_HISTORY_OUTPUT   = 'C:/UNIRIO/Projects/CNNDeepLearning/Output/history.model.CNN.txt'
-historyFileModel1CNN=open(FILE_HISTORY_OUTPUT,'w')
-historyFileModel1CNN.write("Process;CNN;Number of Epocch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Epoch;Loss;Accuracy;Val_Loss;Val_Accuracy\n")
-
-inputImageWidth  = 64
-inputImageHeight = 64
-
+# Type deep layer will be trainning
+typeDeepLayer = 11
 
 # Create object from parameters class  
-ParametersCNN = paramCNN(True,11)
+ParametersCNN = paramCNN(False,typeDeepLayer)
 
 # Set variable HYPER_PARAMETERS with parameters
 HYPER_PARAMETERS=ParametersCNN.getParam()
@@ -114,8 +121,27 @@ for iParameters in range(0,Number_of_Models):
         
         BatchSize = ListBatchSizes[iBatchSize]
 
-        train_dataset = tf.keras.utils.image_dataset_from_directory(TRAIN_DIR,shuffle=True,batch_size=BatchSize,image_size=IMG_SIZE)
-        test_dataset  = tf.keras.utils.image_dataset_from_directory(TEST_DIR,shuffle=True,batch_size=BatchSize,image_size=IMG_SIZE)
+# New Version
+        train_datagen = ImageDataGenerator(rescale = 1./255,
+                                           shear_range = 0.2,
+                                           zoom_range = 0.2,
+                                           horizontal_flip = True)
+
+        test_datagen = ImageDataGenerator(rescale = 1./255)
+
+        train_dataset = train_datagen.flow_from_directory(TRAIN_DIR,
+                                                          target_size = IMG_SIZE,
+                                                          batch_size = BatchSize,
+                                                          class_mode = 'binary')
+        
+        test_dataset = test_datagen.flow_from_directory(TEST_DIR,
+                                                        target_size = IMG_SIZE,
+                                                        batch_size = BatchSize,
+                                                        class_mode = 'binary')
+# End New Version   
+
+#        train_dataset = tf.keras.utils.image_dataset_from_directory(TRAIN_DIR,shuffle=True,batch_size=BatchSize,image_size=IMG_SIZE)
+#        test_dataset  = tf.keras.utils.image_dataset_from_directory(TEST_DIR,shuffle=True,batch_size=BatchSize,image_size=IMG_SIZE)
             
         nStepsPerEpoch=round(nFilesTrain/BatchSize)
         nValidationSteps=round(nFilesTest/BatchSize)
@@ -126,7 +152,10 @@ for iParameters in range(0,Number_of_Models):
                                                   epochs = Epoca, 
                                                   validation_data = test_dataset, 
                                                   validation_steps = nValidationSteps)
-                
+
+        if ParametersCNN.isTrainning() == False:
+             classifier.save(FILE_H5)                
+             
 #        print(resul_classifier.params)
 #        print(resul_classifier.history.keys())
 
@@ -137,21 +166,17 @@ for iParameters in range(0,Number_of_Models):
         val_loss=round(bestAccuracy[2],5)
         val_accuracy=round(bestAccuracy[3],5)
         best_epoch=round(bestAccuracy[4],5)
- 
-                                                                                           
-        fReportHistoric(historyFileModel1CNN,resul_classifier.history,Process,CNNType,Epoca,BatchSize,NumberLayers,nStepsPerEpoch,nValidationSteps)   
- 
+                                                                                            
         duration=time.time()-startProcess                
-        resumeFileModel1CNN.write("%s;%s;%s;%s;%s;%s;%s;%0.5f;%0.5f;%0.5f;%0.5f;%s;%s\n" 
-        %(Process,CNNType,Epoca,BatchSize,NumberLayers,nStepsPerEpoch,nValidationSteps,loss,accuracy,val_loss,val_accuracy,best_epoch,str(datetime.timedelta(seconds=duration))))
-        resumeFileModel1CNN.flush()
+ 
+        # Report resume
+        resumeFileModel1CNN.write("%s;%s;%s;%s;%s;%s;%s;%s;%0.5f;%0.5f;%0.5f;%0.5f;%s;%s\n"  %(typeDeepLayer,Process,CNNType,Epoca,BatchSize,NumberLayers,nStepsPerEpoch,nValidationSteps,loss,accuracy,val_loss,val_accuracy,best_epoch,str(datetime.timedelta(seconds=duration))))        
         
-    if ParametersCNN.isTrainning() == False:
-        classifier.save("cnn.h5")
+        # Report history
+        fReportHistoric(historyFileModel1CNN,resul_classifier.history,typeDeepLayer,Process,CNNType,Epoca,BatchSize,NumberLayers,nStepsPerEpoch,nValidationSteps)                                                 
     
     del NewModelCNN
 
-classifier.save("cnn.h5")    
 classifier.summary()   
 resumeFileModel1CNN.close()    
 historyFileModel1CNN.close()  
