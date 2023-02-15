@@ -1,2 +1,0 @@
-Group Model;Model;CNN;Epoch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Loss;Accuracy;Val_Loss;Val_Accuracy;Best Epoch;Duration
-8;2;1;30;16;3;326;39;0.17421;0.93271;0.26058;0.89744;12;0:32:17.394779
