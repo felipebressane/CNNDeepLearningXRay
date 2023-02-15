@@ -2,14 +2,16 @@
 """
 Created on Thu Jan 19 19:57:50 2023
 
-@author: cfelipe
+@author: Felipe Bressane 
 """
 import cv2
 import os
 import numpy as np
 from tensorflow.keras.utils import load_img, img_to_array
 from keras.models import load_model
-
+import matplotlib
+from sklearn.metrics import confusion_matrix
+from mlxtend.plotting import plot_confusion_matrix
 
 def fRsizeImages(dirInputImages,dirOutputImages,reSizeWidth,reSizeHeight):
     
@@ -63,8 +65,9 @@ def fComonDivisors(firstValue, secondValue):
         baseValue = secondValue
           
     for divisor in range(1,baseValue):
-        if firstValue % divisor == 0 and secondValue % divisor == 0:  
-            divisors.append(divisor)
+        if divisor > 4:            
+            if firstValue % divisor == 0 and secondValue % divisor == 0:  
+                divisors.append(divisor)
             
     return divisors
 
@@ -107,10 +110,13 @@ def fPredictXRayLung(model,xRayFile,SizeWidth,SizeHeight):
     
     result = cnnModel.predict(testImage)
         
-    if result[0][0] == 1:        
+    if result[0][0] == 1:   
         prediction = 'Pneumonia'
-    else:        
+    else:                
         prediction = 'Normal'
+#        print(result[0][0])
+#        print(xRayFile)
+
 
     return prediction
 
@@ -131,4 +137,20 @@ def fReportHistoric(fileReport,historyTrainning,typeDeepLayer,process,cnn,number
         fileReport.write("%s;%s;%s;%s;%s;%s;%s;%s;%s;%0.5f;%0.5f;%0.5f;%0.5f\n" %(typeDeepLayer,process,cnn,numberEpoch,batchSize,numberLayers,stepsPerEpoch,validationSteps,iEpoch,loss,accuracy,val_loss,val_accuracy))
     
     fileReport.flush()
+    
+    
+#probabilities = classifier.predict_generator(generator=train_dataset)
+        
+
+#y_true = train_dataset.classes
+
+#y_pred = probabilities > 0.5
+
+
+#font = { 'family': 'Times New Roman','size': 12}        
+#matplotlib.rc('font', **font)
+
+#mat = confusion_matrix(y_true, y_pred)        
+
+#plot_confusion_matrix(conf_mat=mat, figsize=(12, 12), show_normed=False)    
     
