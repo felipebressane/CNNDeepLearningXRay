@@ -1,0 +1,3 @@
+Type Deep Layer;Process;CNN;Epoch;Batch Size;Camadas Ocultas;Steps_per_Epoch;Validation_Steps;Loss;Accuracy;Val_Loss;Val_Accuracy;Best Epoch;Duration
+11;1;11;20;8;1;652;78;0.14879;0.94210;0.37956;0.87660;9;0:05:21.560960
+11;1;11;20;16;1;326;39;0.10158;0.96530;0.38754;0.87821;2;0:09:45.988587

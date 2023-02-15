@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['cnn_main.py', 'CNNPacket\\model_CNN.py', 'CNNPacket\\param_CNN.py', 'resize_xRay_images.py', 'UtilPacket\\util_functions.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+
